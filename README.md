@@ -6,8 +6,7 @@
     "phone": "070-000-0000"
   },
 ``
-
-
+ 
 **Request** GET /api/User/GetInterestById
 https://localhost:7216/api/User/GetInterestById?PersonId=2
 ``
@@ -21,7 +20,7 @@ https://localhost:7216/api/User/GetInterestById?PersonId=2
     ]
   }
 ``
-
+ 
 **Request** GET /api/User/GetLinksById
 https://localhost:7216/api/User/GetLinksById?PersonId=2
 ``
@@ -36,7 +35,7 @@ https://localhost:7216/api/User/GetLinksById?PersonId=2
   ]
 }
 ``
-
+ 
 **Request** POST /api/User/AttachNewInterestById
 https://localhost:7216/api/User/AttachNewInterestById?PersonId=3&InterestId=1
 ``
@@ -47,7 +46,7 @@ https://localhost:7216/api/User/AttachNewInterestById?PersonId=3&InterestId=1
   "personId": 3
 }
 ``
-
+ 
 POST /api/User/AddLinkById
 https://localhost:7216/api/User/AddLinkById?PersonId=1
 ``
