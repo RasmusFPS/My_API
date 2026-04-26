@@ -9,9 +9,12 @@ namespace MYAPI.Models
 
         [Required]
         public string URL { get; set; } = string.Empty;
+        public int InterestId { get; set; }
+        public int PersonId { get; set; }
 
         [JsonIgnore]
-        public ICollection<Link> Links { get; set; } = null!;
-
+        public Person Person { get; set; } = null!;
+        [JsonIgnore]
+        public Interest Interest { get; set; }
     }
 }

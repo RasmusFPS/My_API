@@ -33,12 +33,17 @@ namespace MYAPI.Models
                 new Interest { Id = 5, Title = "Cooking", Description = "Creating delicious food" }
                 );
             modelBuilder.Entity<Link>().HasData(
-                new Link { Id = 1, URL = "https://www.w3schools.com/" },
-                new Link { Id = 2, URL = "https://open.spotify.com/" },
-                new Link { Id = 3, URL = "https://steamcommunity.com/id/RasmusFPS/" },
-                new Link { Id = 4, URL = "https://www.speedrun.com/users/RasmusFPS/" },
-                new Link { Id = 5, URL = "https://www.arla.se/recept/" }
+                new Link { Id = 1, URL = "https://www.w3schools.com/", InterestId = 1, PersonId = 1},
+                new Link { Id = 2, URL = "https://open.spotify.com/", InterestId = 2, PersonId = 1 },
+
+                new Link { Id = 3, URL = "https://steamcommunity.com/id/RasmusFPS/", InterestId = 3, PersonId = 2 },
+
+                new Link { Id = 4, URL = "https://www.speedrun.com/users/RasmusFPS/", InterestId = 4, PersonId = 3 },
+
+                new Link { Id = 5, URL = "https://www.arla.se/recept/", InterestId = 5, PersonId = 4 }
                 );
+
+
         }
 
 
