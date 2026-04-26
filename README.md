@@ -36,6 +36,7 @@ https://localhost:7216/api/User/GetLinksById?PersonId=2
   ]
 }
 ``
+
 **Request** POST /api/User/AttachNewInterestById
 https://localhost:7216/api/User/AttachNewInterestById?PersonId=3&InterestId=1
 ``
