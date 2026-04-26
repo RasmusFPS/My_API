@@ -47,7 +47,7 @@ https://localhost:7216/api/User/AttachNewInterestById?PersonId=3&InterestId=1
 }
 ``
  
-POST /api/User/AddLinkById
+**Request** POST /api/User/AddLinkById
 https://localhost:7216/api/User/AddLinkById?PersonId=1
 ``
 {
