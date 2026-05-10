@@ -11,17 +11,17 @@ namespace MYAPI.Controllers
     [ApiController]
     public class UserController : ControllerBase
     {
-        private readonly ApiDbContext _contex;
+        private readonly ApiDbContext _context;
 
         public UserController(ApiDbContext contex)
         {
-            _contex = contex;
+            _context = contex;
         }
 
         [HttpGet("Person", Name = "GetAllPersons")]
         public async Task<ActionResult<IEnumerable<GetPersonResponse>>> GetAllPersons()
         {
-            return Ok(await _contex.Person
+            return Ok(await _context.Person
                 .Select(p => new GetPersonResponse(
                     p.Id,
                     p.Name,
@@ -33,7 +33,7 @@ namespace MYAPI.Controllers
         [HttpGet("GetInterestById", Name = "GetInterestById")]
         public async Task<IActionResult> GetInterestById(int PersonId)
         {
-            var person = _contex.Person.Where(p => p.Id == PersonId).Select(p => new
+            var person = _context.Person.Where(p => p.Id == PersonId).Select(p => new
             {
                 p.Name,
                 Interest = p.Links.Select(l => new
@@ -55,7 +55,7 @@ namespace MYAPI.Controllers
         [HttpGet("GetLinksById", Name = "GetLinksById")]
         public async Task<ActionResult> GetLinksById(int PersonId)
         {
-            var person = _contex.Person.Where(p => p.Id == PersonId)
+            var person = _context.Person.Where(p => p.Id == PersonId)
             .Select(p => new
             {
                 p.Name,
@@ -76,48 +76,48 @@ namespace MYAPI.Controllers
         }
 
         [HttpPost("AttachNewInterestById", Name ="AddInterestById")]
-        public async Task<IActionResult> AddInterestById(int PersonId, int InterestId)
+        public async Task<IActionResult> AddInterestById(int personId, int interestId)
         {
-            var personToUpdate = await _contex.Person.FirstOrDefaultAsync(u => u.Id == PersonId);
-            var interest = await _contex.Interest.FirstOrDefaultAsync(i => i.Id == InterestId);
+            var person = await _context.Person.FirstOrDefaultAsync(p => p.Id == personId);
+            var interest = await _context.Interest.FirstOrDefaultAsync(i => i.Id == interestId);
 
-            if (PersonId == null)
+            if (person == null)
             {
-                return NotFound($"Person NotFound with id:{PersonId}");
+                return NotFound($"Person NotFound with id:{personId}");
             }
-            if(InterestId == null)
+            if(interest == null)
             {
-                return NotFound($"Person NotFound with id:{PersonId}");
+                return NotFound($"Person NotFound with id:{personId}");
             }
 
-            var AlreadyHasInterest = await _contex.Links.AnyAsync(l => l.PersonId == PersonId && l.InterestId == InterestId);
+            var AlreadyHasInterest = await _context.PersonInterests.AnyAsync(p => p.PersonId == personId && p.InterestId == interestId);
             if (AlreadyHasInterest)
             {
-                return BadRequest($"Person with this id:{PersonId} already has this Interest");
+                return BadRequest($"Person with this id:{personId} already has this Interest");
             }
 
-            var NewInterest = new Link
+            var NewInterest = new PersonInterests
             {
-                InterestId = InterestId,
-                PersonId = PersonId,
+                PersonId = personId,
+                InterestId = interestId,
             };
 
-            await _contex.Links.AddAsync(NewInterest);
-            await _contex.SaveChangesAsync();
+            await _context.PersonInterests.AddAsync(NewInterest);
+            await _context.SaveChangesAsync();
 
-            return NoContent();
+            return Ok(NewInterest);
         }
 
         [HttpPost("AddLinkById", Name = "AddLinkById")]
-        public async Task<IActionResult> AddLinkById(int PersonId, AddLinkToPerson dto)
+        public async Task<ActionResult<AddLinkToPerson>> AddLinkById(int PersonId, AddLinkToPerson dto)
         {
-            var personExists = await _contex.Person.AnyAsync(p => p.Id == PersonId);
+            var personExists = await _context.Person.AnyAsync(p => p.Id == PersonId);
             if (!personExists)
             {
                 return NotFound($"Cannot add link. Person with ID {PersonId} was not found.");
             }
 
-            var interestExists = await _contex.Interest.AnyAsync(i => i.Id == dto.InterestId);
+            var interestExists = await _context.Interest.AnyAsync(i => i.Id == dto.InterestId);
             if (!interestExists)
             {
                 return NotFound($"Cannot add link. Interest with ID {dto.InterestId} was not found.");
@@ -130,10 +130,10 @@ namespace MYAPI.Controllers
                 InterestId = dto.InterestId
             };
 
-            await _contex.Links.AddAsync(NewLink);
-            await _contex.SaveChangesAsync();
+            await _context.Links.AddAsync(NewLink);
+            await _context.SaveChangesAsync();
 
-            return NoContent();
+            return Ok(NewLink);
         }
     }
 
