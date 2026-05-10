@@ -106,35 +106,49 @@ namespace MYAPI.Migrations
                             Id = 1,
                             InterestId = 1,
                             PersonId = 1,
-                            URL = "https://www.w3schools.com/"
+                            URL = "https://Github.com"
                         },
                         new
                         {
                             Id = 2,
                             InterestId = 2,
                             PersonId = 1,
-                            URL = "https://open.spotify.com/"
+                            URL = "https://Spotify.com"
                         },
                         new
                         {
                             Id = 3,
-                            InterestId = 3,
+                            InterestId = 2,
                             PersonId = 2,
-                            URL = "https://steamcommunity.com/id/RasmusFPS/"
+                            URL = "https://Spotify.com"
                         },
                         new
                         {
                             Id = 4,
-                            InterestId = 4,
-                            PersonId = 3,
-                            URL = "https://www.speedrun.com/users/RasmusFPS/"
+                            InterestId = 3,
+                            PersonId = 2,
+                            URL = "https://Steam.com"
                         },
                         new
                         {
                             Id = 5,
+                            InterestId = 3,
+                            PersonId = 3,
+                            URL = "https://Steam.com"
+                        },
+                        new
+                        {
+                            Id = 6,
+                            InterestId = 4,
+                            PersonId = 4,
+                            URL = "https://www.speedrun.com/users/RasmusFPS"
+                        },
+                        new
+                        {
+                            Id = 7,
                             InterestId = 5,
                             PersonId = 4,
-                            URL = "https://www.arla.se/recept/"
+                            URL = "https://Arla.se/Recept"
                         });
                 });
 
@@ -184,6 +198,73 @@ namespace MYAPI.Migrations
                         });
                 });
 
+            modelBuilder.Entity("MYAPI.Models.PersonInterests", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int");
+
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
+
+                    b.Property<int>("InterestId")
+                        .HasColumnType("int");
+
+                    b.Property<int>("PersonId")
+                        .HasColumnType("int");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("InterestId");
+
+                    b.HasIndex("PersonId");
+
+                    b.ToTable("PersonInterests");
+
+                    b.HasData(
+                        new
+                        {
+                            Id = 1,
+                            InterestId = 1,
+                            PersonId = 1
+                        },
+                        new
+                        {
+                            Id = 2,
+                            InterestId = 2,
+                            PersonId = 1
+                        },
+                        new
+                        {
+                            Id = 3,
+                            InterestId = 2,
+                            PersonId = 2
+                        },
+                        new
+                        {
+                            Id = 4,
+                            InterestId = 3,
+                            PersonId = 2
+                        },
+                        new
+                        {
+                            Id = 5,
+                            InterestId = 3,
+                            PersonId = 3
+                        },
+                        new
+                        {
+                            Id = 6,
+                            InterestId = 4,
+                            PersonId = 4
+                        },
+                        new
+                        {
+                            Id = 7,
+                            InterestId = 5,
+                            PersonId = 4
+                        });
+                });
+
             modelBuilder.Entity("MYAPI.Models.Link", b =>
                 {
                     b.HasOne("MYAPI.Models.Interest", "Interest")
@@ -201,6 +282,25 @@ namespace MYAPI.Migrations
                     b.Navigation("Interest");
 
                     b.Navigation("Person");
+                });
+
+            modelBuilder.Entity("MYAPI.Models.PersonInterests", b =>
+                {
+                    b.HasOne("MYAPI.Models.Interest", "interest")
+                        .WithMany()
+                        .HasForeignKey("InterestId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.HasOne("MYAPI.Models.Person", "person")
+                        .WithMany()
+                        .HasForeignKey("PersonId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("interest");
+
+                    b.Navigation("person");
                 });
 
             modelBuilder.Entity("MYAPI.Models.Person", b =>
